@@ -51,7 +51,7 @@ variable "cluster_name" {
 variable "cluster_vip_shared_ip" {
   description = "Shared virtual IP address for control plane nodes"
   type        = string
-  default     = "192.168.1.100"
+  default     = "192.168.1.241"
 }
 
 variable "node_data" {

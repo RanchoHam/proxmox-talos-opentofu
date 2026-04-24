@@ -36,7 +36,7 @@ resource "talos_machine_configuration_apply" "controlplane" {
       install_disk         = each.value.install_disk
       install_image        = each.value.install_image
       dns                  = var.domain_name_server
-      ip_address           = "${each.key}/24"
+      ip_address           = "${each.key}/25"
       network              = var.network
       network_gateway      = var.network_gateway
       vip_shared_ip        = var.cluster_vip_shared_ip
@@ -58,7 +58,7 @@ resource "talos_machine_configuration_apply" "worker" {
       install_disk    = each.value.install_disk
       install_image   = each.value.install_image
       dns             = var.domain_name_server
-      ip_address      = "${each.key}/24"
+      ip_address      = "${each.key}/25"
       network         = var.network
       network_gateway = var.network_gateway
     })

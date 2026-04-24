@@ -1,8 +1,8 @@
 resource "proxmox_vm_qemu" "kubernetes_control_plane" {
   depends_on  = [proxmox_storage_iso.talos_linux_iso_image]
   for_each    = var.node_data.controlplanes
-  name        = format("%s-kubernetes-control-plane-%s", var.cluster_name, index(keys(var.node_data.controlplanes), each.key))
-  description = "Kubernetes Control Plane"
+  name        = format("%s-k8s-cp-%s", var.cluster_name, index(keys(var.node_data.controlplanes), each.key))
+  description = "Kubernetes Control Plane managed by openTofu"
   target_node = var.proxmox_target_node
   agent       = 1
   vm_state    = "running"
@@ -47,15 +47,15 @@ resource "proxmox_vm_qemu" "kubernetes_control_plane" {
 
   # Cloud init setup
   os_type   = "cloud-init"
-  ipconfig0 = "ip=${each.key}/24,gw=${var.network_gateway}"
+  ipconfig0 = "ip=${each.key}/25,gw=${var.network_gateway}"
 }
 
 
 resource "proxmox_vm_qemu" "kubernetes_worker" {
   depends_on  = [proxmox_storage_iso.talos_linux_iso_image]
   for_each    = var.node_data.workers
-  name        = format("%s-kubernetes-worker-%s", var.cluster_name, index(keys(var.node_data.workers), each.key))
-  description = "Kubernetes Worker Node"
+  name        = format("%s-k8s-wrkr-%s", var.cluster_name, index(keys(var.node_data.workers), each.key))
+  description = "Kubernetes Worker Node managed by openTofu"
   target_node = var.proxmox_target_node
   agent       = 1
   vm_state    = "running"
@@ -100,5 +100,5 @@ resource "proxmox_vm_qemu" "kubernetes_worker" {
 
   # Cloud init setup
   os_type   = "cloud-init"
-  ipconfig0 = "ip=${each.key}/24,gw=${var.network_gateway}"
+  ipconfig0 = "ip=${each.key}/25,gw=${var.network_gateway}"
 }
